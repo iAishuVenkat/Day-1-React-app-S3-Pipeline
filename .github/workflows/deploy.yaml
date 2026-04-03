@@ -86,4 +86,5 @@ jobs:
       - name: Print Website URL
         run: |
           BUCKET_NAME=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
-          echo "Site is live at: http://$BUCKET_NAME.s3-website-${AWS_DEFAULT_REGION}.amazonaws.com"
+          REGION=$(echo $AWS_DEFAULT_REGION | rev | rev)
+          echo "Site is live at: http://$BUCKET_NAME.s3-website-${REGION}.amazonaws.com"
