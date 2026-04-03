@@ -3,7 +3,7 @@ name: S3 Static Website Hosting
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
