@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+env:
+  AWS_REGION: us-east-1
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -29,21 +32,15 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: us-east-1
 
       - name: Create S3 Bucket (if not exists)
         run: |
           BUCKET_NAME=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
-          REGION="${{ secrets.AWS_REGION }}"
           if aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
             echo "Bucket already exists"
           else
-            if [ "$REGION" = "us-east-1" ]; then
-              aws s3api create-bucket --bucket "$BUCKET_NAME" --region "$REGION"
-            else
-              aws s3api create-bucket --bucket "$BUCKET_NAME" --region "$REGION" \
-                --create-bucket-configuration LocationConstraint="$REGION"
-            fi
+            aws s3api create-bucket --bucket "$BUCKET_NAME" --region us-east-1
             echo "Bucket created: $BUCKET_NAME"
           fi
 
@@ -86,6 +83,4 @@ jobs:
       - name: Print Website URL
         run: |
           BUCKET_NAME=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
-          ENDPOINT=$(aws s3api get-bucket-website --bucket "$BUCKET_NAME" --query 'WebsiteConfiguration' 2>/dev/null || true)
-          URL=$(aws s3api get-bucket-location --bucket "$BUCKET_NAME" --output text | awk '{if($1=="None") print "us-east-1"; else print $1}' | xargs -I{} echo "http://$BUCKET_NAME.s3-website-{}.amazonaws.com")
-          echo "Site is live at: $URL"
+          echo "Site is live at: http://$BUCKET_NAME.s3-website-us-east-1.amazonaws.com"
