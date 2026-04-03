@@ -1,6 +1,6 @@
 # Day 1 — React App S3 Pipeline
 
-A React app with a fully automated CI/CD pipeline that builds and deploys to AWS S3 static website hosting on every push to `main`.
+A React app with a fully automated CI/CD pipeline that builds and deploys to AWS S3 static website hosting on every push to `master`.
 
 ---
 
@@ -56,18 +56,19 @@ Go to your repo → Settings → Secrets and variables → Actions, and add:
 |--------|-------------|
 | `AWS_ACCESS_KEY_ID` | Your AWS access key |
 | `AWS_SECRET_ACCESS_KEY` | Your AWS secret key |
-| `AWS_REGION` | e.g. `us-east-1` |
 
-### 2. Push to main
+> Region is hardcoded to `us-east-1` in the workflow — no need to add it as a secret.
+
+### 2. Push to master
 
 ```bash
-git push origin main
+git push origin master
 ```
 
 The pipeline runs automatically and your site will be live at:
 
 ```
-http://<repo-name>.s3-website-<region>.amazonaws.com
+http://day-1-react-app-s3-pipeline.s3-website-us-east-1.amazonaws.com
 ```
 
 ---
