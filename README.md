@@ -6,7 +6,7 @@ A React app with a fully automated CI/CD pipeline that builds and deploys to AWS
 
 ## Architecture
 
-![Architecture Diagram](Architecture%20Diagram.png)
+![Architecture Diagram](Architecture_Diagram.excalidraw.svg)
 
 The flow:
 1. Developer pushes code to GitHub
